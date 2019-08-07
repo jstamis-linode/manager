@@ -46,10 +46,10 @@ describe('Show More Expansion Suite', () => {
       const ariaAfterClick = $(showMore).getAttribute('aria-expanded').includes('true');
 
       expect(afterClickState)
-        .withContext(``)
+        .withContext(`Menu should be expanded`)
         .toBe(true);
       expect(ariaAfterClick)
-        .withContext(``)
+        .withContext(`${ariaMsg}`)
         .toBe(true);
     });
 
@@ -67,10 +67,10 @@ describe('Show More Expansion Suite', () => {
       const ariaAfterCollapse = $(showMore).getAttribute('aria-expanded').includes('false');
 
       expect(afterCollapse)
-        .withContext(``)
+        .withContext(`Menu should be collapsed`)
         .toBe(true);
       expect(ariaAfterCollapse)
-        .withContext(``)
+        .withContext(`${ariaMsg}`)
         .toBe(true);
     });
   })
