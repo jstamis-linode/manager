@@ -11,8 +11,6 @@ describe('Tabbed Panel Suite', () => {
   const tab = '[data-qa-tab]';
   const tabBody = '[data-qa-tab-body]';
 
-  let tabValue ='';
-
   beforeAll(() => {
     navigateToStory(component, childStories[0]);
   });
