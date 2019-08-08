@@ -8,34 +8,46 @@ describe('Tags Panel Suite', () => {
     const deleteTag = '[data-qa-delete-tag]';
     const addTag = '[data-qa-add-tag]';
     const tagsSelect = '[data-qa-enhanced-select]';
+    const addTagParagraph = '[data-qa-tag-p]'
 
     beforeAll(() => {
         navigateToStory(component, childStories[0]);
     });
 
     it('there should be a tag panel, and icons to add and delete tags', () => {
-        browser.waitForVisible(tag,constants.wait.normal);
-        expect($$(tag).length).toBe(3);
-        expect($$(deleteTag).length).toBe(3);
-        expect($(addTag).isVisible()).toBe(true);
+        $(tag).waitForDisplayed(constants.wait.normal);
+        expect($$(tag).length)
+          .withContext(`Should be 3 tags`)
+          .toBe(3);
+        expect($$(deleteTag).length)
+          .withContext(`Should be 3 delete tag icons`)
+          .toBe(3);
+        expect($(addTag).isDisplayed())
+          .withContext(`Plus symbol should be visible`)
+          .toBe(true);
+        expect($(addTagParagraph).isDisplayed())
+          .withContext(`'Add New Tag' p element should be displayed`)
     });
 
     it('a tag can be deleted', () => {
-        $$(deleteTag)[0].click();
+        $('[data-qa-tag="tagTwo"] [data-qa-delete-tag]').click();
         browser.waitUntil(() => {
             return $$(tag).length == 2
         }, constants.wait.normal);
+        expect($('[data-qa-tag="tagTwo"]').isExisting())
+          .withContext(`Tag Two should not exist in the DOM`)
+          .toBe(false)
     });
 
     it('a tag can be added', () => {
         executeInAllStories(component,childStories, () => {
-            browser.waitForVisible(addTag, constants.wait.normal);
+            $(addTag).waitForDisplayed(constants.wait.normal);
             const startTags = $$(tag).length
             $(addTag).click();
-            browser.waitForVisible(tagsSelect, constants.wait.normal);
+            $(tagsSelect).waitForDisplayed(constants.wait.normal);
             const testTag = "TEST_TAG";
             const createTagSelect = $(tagsSelect).$('..').$('input');
-            createTagSelect.waitForVisible(constants.wait.normal);
+            createTagSelect.waitForDisplayed(constants.wait.normal);
             createTagSelect.setValue(testTag);
             createTagSelect.addValue('\uE007');
             browser.waitUntil(() => {
