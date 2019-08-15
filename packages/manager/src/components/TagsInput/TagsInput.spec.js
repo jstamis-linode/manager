@@ -8,20 +8,16 @@ describe('Tags Input Suite', () => {
   const tagInput = '#add-tags input';
   const tagOptions = '[data-qa-option]';
   const selectedTags = '[data-qa-multi-option]';
-  const inputError = '#add-tags-helper-text'
+  const inputError = '#add-tags-helper-text';
 
   const inputValidation = (tagText) => {
     $(tagInput).setValue(tagText);
     $(tagOptions).waitForDisplayed(constants.wait.normal);
     $$(tagOptions)[0].click();
-    try {
-      inputError.waitForVisible(constants.wait.normal);
-      expect(inputError.getText())
-        .withContext(`Incorrect error message`)
-        .toContain('Length must be 3-50 characters');
-    } catch (e) {
-
-    }
+    $(inputError).waitForDisplayed(constants.wait.normal);
+    expect($(inputError).getText())
+      .withContext(`Incorrect error message`)
+      .toContain('Length must be 3-50 characters');
   }
 
   beforeAll(() => {
@@ -56,14 +52,14 @@ describe('Tags Input Suite', () => {
   });
 
   it('a single tag can be cleared by clicking the x icon on tag', () => {
-    $(`${selectedTags}`).$('..').$('svg').click();
+    $('[data-qa-select-remove]').click();
     browser.waitUntil(() => {
         return $$(selectedTags).length === 1;
     },constants.wait.normal);
   });
 
   it('all tags can be cleared by clicking on the x icon to clear select', () => {
-    $('svg[height="20"]').click();
+    $('.react-select__indicators svg').click()
     //wait for selected tags not displayed
     $(selectedTags).waitForDisplayed(constants.wait.normal, true);
   });
@@ -75,15 +71,15 @@ describe('Tags Input Suite', () => {
     $$(tagOptions)[0].click();
     $(selectedTags).waitForDisplayed(constants.wait.normal);
     expect($(selectedTags).getText())
-      .withContext(``)
+      .withContext(`missing created tag name`)
       .toEqual(testTag);
-    $('svg[height="20"]').click();
+    $('.react-select__indicators svg').click()
   });
 
   it('a tag must be between 3-50 characters', () => {
     inputValidation('aa');
     navigateToStory(component, childStories[0]);
-    inputValidation('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
+    inputValidation('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
   });
 
   describe('Tags Input with api error', () => {

@@ -72,7 +72,7 @@ describe('Button Suite', () => {
         .toBe(1);
     });
 
-    it('should display buttons with transparent backgrounds', () => {
+    it('should display secondary buttons with transparent backgrounds', () => {
       secondaryButtons.forEach(button => {
         expect(button.getCSSProperty('background-color').parsed.hex)
           .withContext(`incorrect color background color`)
@@ -121,7 +121,7 @@ describe('Button Suite', () => {
     beforeAll(() => {
       navigateToStory(component, childStories[3]);
       $(button.generic).waitForDisplayed();
-    })
+    });
 
     it('should display dropdown buttons with carat', () => {
       secondaryDropdowns = $$(button.secondaryDropdown);
@@ -150,7 +150,7 @@ describe('Button Suite', () => {
     let destructiveButtons;
 
     it('should display an enabled destructive button and a disabled button', () => {
-      destructiveButtons = $$(button.generic)
+      destructiveButtons = $$(button.generic);
       const disabledButtons = destructiveButtons.filter(d => d.getAttribute('class').includes('disabled'));
 
       destructiveButtons.forEach(d => {
@@ -158,6 +158,17 @@ describe('Button Suite', () => {
           .withContext(`destructive button should be displayed`)
           .toBe(true);
       });
+
+      expect(destructiveButtons.length)
+        .withContext(`incorrect number of destructive buttons`)
+        .toBe(2);
+
+      disabledButtons.forEach(d => {
+        expect(d.isDisplayed())
+          .withContext(`disabled button should be displayed`)
+          .toBe(true);
+      });
+
       expect(disabledButtons.length)
         .withContext(`incorrect number of disabled buttons`)
         .toBe(1);
