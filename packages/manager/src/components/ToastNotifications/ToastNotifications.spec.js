@@ -25,7 +25,7 @@ describe('Toast Notification Suite', () => {
     expect($(toastColor).getCSSProperty('border-left-color').value)
       .withContext(`incorrect variant color`)
       .toBe(color);
-    $('[title="Dismiss Notification"]').click()
+    $('[title="Dismiss Notification"]').click();
     $(toastColor).waitForDisplayed(constants.wait.short, true);
   }
 
@@ -53,15 +53,15 @@ describe('Toast Notification Suite', () => {
 
   it('Toast notifications have correct color', () => {
     //default
-    checkToastColor('default', 'rgba(0,0,0,0)')
+    checkToastColor('default', 'rgba(0,0,0,0)');
     //success
-    checkToastColor('success', 'rgba(54,131,220,1)')
+    checkToastColor('success', 'rgba(54,131,220,1)');
     //warning
-    checkToastColor('warning', 'rgba(255,208,2,1)')
+    checkToastColor('warning', 'rgba(255,208,2,1)');
     //error
-    checkToastColor('error', 'rgba(205,34,39,1)')
+    checkToastColor('error', 'rgba(205,34,39,1)');
     //info
-    checkToastColor('info', 'rgba(54,131,220,1)')
+    checkToastColor('info', 'rgba(54,131,220,1)');
   });
 
   it('Toast notification disappears after 4 seconds', () => {
@@ -80,7 +80,7 @@ describe('Toast Notification Suite', () => {
     browser.pause(500);
     const successIsNull = $$(toast).find(toast => toast.getAttribute('class').includes('SnackBar-success'));
     expect(successIsNull)
-      .withContext(``)
+      .withContext(`should not have SnackBar-success class`)
       .toEqual(undefined);
   });
 });

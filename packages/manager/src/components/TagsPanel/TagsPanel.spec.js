@@ -108,9 +108,15 @@ describe('Tags Panel Suite', () => {
     it('can add tags', () => {
       executeInAllStories(component,childStories, () => {
         const testTag = "TEST_TAG";
-        addNewTag(testTag)
-        expect($$(tag).find(tagName => tagName.getText() === testTag))
-          .withContext(`tag text is missing`).not.toBeNull();
+        addNewTag(testTag);
+        const matchingTag = $$(tag).find(tagName => tagName.getText() === testTag);
+
+        expect(matchingTag.length)
+          .withContext(`should be one matching tag`)
+          .toBe(1);
+        expect(matchingTag)
+          .withContext(`incorrect tag text`)
+          .toBe(testTag);
       });
     });
 
@@ -120,14 +126,14 @@ describe('Tags Panel Suite', () => {
         const testTag2 = "taggy tag tag";
         const testTag3 = "#!-987q924htr3-f890&$@";
 
-        addNewTag(testTag)
-        verifyTagName(testTag)
+        addNewTag(testTag);
+        verifyTagName(testTag);
 
-        addNewTag(testTag2)
-        verifyTagName(testTag2)
+        addNewTag(testTag2);
+        verifyTagName(testTag2);
 
-        addNewTag(testTag3)
-        verifyTagName(testTag3)
+        addNewTag(testTag3);
+        verifyTagName(testTag3);
       });
     });
   });
@@ -144,27 +150,27 @@ describe('Tags Panel Suite', () => {
 
       expect($$(options).length)
         .withContext(`should be 5 drop down options`)
-        .toBe(5)
+        .toBe(5);
       expect($('[data-qa-option="tagTwo"]').isExisting())
         .withContext(`tagTwo should be in the list`)
-        .toBe(true)
+        .toBe(true);
 
     });
 
     it('added tags that are removed are not lost', () => {
       const testTag = "taggy tag tag";
-      addNewTag(testTag)
-      verifyTagName(testTag)
+      addNewTag(testTag);
+      verifyTagName(testTag);
 
-      deleteTagName(testTag)
+      deleteTagName(testTag);
 
       $(addTag).click();
       expect($$(options).length)
         .withContext(`should be 5 drop down options`)
-        .toBe(5)
+        .toBe(5);
       expect($(`[data-qa-option="${testTag}"]`).isExisting())
         .withContext(`${testTag} should be in the list`)
-        .toBe(true)
+        .toBe(true);
     });
   });
 });

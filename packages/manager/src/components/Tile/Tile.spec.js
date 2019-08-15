@@ -26,7 +26,7 @@ describe('Tile Suite', () => {
       .toBe(title);
     expect($('[data-qa-tile-desc]').getText())
       .withContext(`incorrect title description`)
-      .toMatch(description)
+      .toMatch(description);
   });
 
   it('should link to another page', () => {
