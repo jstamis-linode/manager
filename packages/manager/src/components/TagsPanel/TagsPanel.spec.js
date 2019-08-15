@@ -17,7 +17,7 @@ describe('Tags Panel Suite', () => {
   const addNewTag = (tagname) => {
     $(addTag).click();
     $(tagsSelect).waitForDisplayed(constants.wait.normal);
-    const startTags = $$(tag).length
+    const startTags = $$(tag).length;
     const createTagSelect = $(`${tagsSelect} input`);
     createTagSelect.waitForDisplayed(constants.wait.normal);
     expect($(addTagParagraph).isExisting())
@@ -43,10 +43,10 @@ describe('Tags Panel Suite', () => {
   }
 
   const deleteTagName = (tagname) => {
-    const tags = $$(tag).length
+    const tags = $$(tag).length;
     $(`[data-qa-tag="${tagname}"] [data-qa-delete-tag]`).click();
     browser.waitUntil(() => {
-      return $$(tag).length < tags
+      return $$(tag).length == tags - 1
     }, constants.wait.normal);
     expect($(`[data-qa-tag="${tagname}"]`).isExisting())
       .withContext(`${tagname} should not exist in the DOM`)
