@@ -25,10 +25,13 @@ describe('Expansion Panel Suite', () => {
       .withContext(`Incorrect text found`).toMatch(noticeTxt);
   }
 
-  function expandAssertGridItem(opposite=false) {
+  function expandAssertGridItem(visible=true,opposite=false) {
     $('[data-qa-panel-summary]').click();
-    $(gridItem).waitForDisplayed(5000, opposite)
-  }
+    $(gridItem).waitForDisplayed(constants.wait.short, opposite)
+    expect($(gridItem).isDisplayed())
+      .withContext(`grid item display should be ${visible}`)
+      .toBe(visible);
+  };
 
   function panelDisplays(panelMsg) {
     $(panel).waitForDisplayed(constants.wait.normal);
@@ -49,7 +52,8 @@ describe('Expansion Panel Suite', () => {
     });
 
     it('should collapse on click', () => {
-      expandAssertGridItem(true);
+      expandAssertGridItem();
+      expandAssertGridItem(false,true);
     });
   });
 
@@ -76,7 +80,8 @@ describe('Expansion Panel Suite', () => {
     });
 
     it('should collapse on click', () => {
-      expandAssertGridItem(true);
+      expandAssertGridItem();
+      expandAssertGridItem(false, true);
     });
   });
 
@@ -103,7 +108,8 @@ describe('Expansion Panel Suite', () => {
     });
 
     it('should collapse on click', () => {
-      expandAssertGridItem(true);
+      expandAssertGridItem();
+      expandAssertGridItem(false, true);
     });
   });
 
@@ -131,7 +137,7 @@ describe('Expansion Panel Suite', () => {
 
     it('should collapse on click', () => {
       expandAssertGridItem();
-      expandAssertGridItem(true);
+      expandAssertGridItem(false, true);
     });
   });
 

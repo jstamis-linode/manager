@@ -108,13 +108,14 @@ describe('Tags Panel Suite', () => {
     it('can add tags', () => {
       executeInAllStories(component,childStories, () => {
         const testTag = "TEST_TAG";
-        addNewTag(testTag);
-        const matchingTag = $$(tag).find(tagName => tagName.getText() === testTag);
+        const matchingTag = `[data-qa-tag="${testTag}"]`;
 
-        expect(matchingTag.length)
+        addNewTag(testTag);
+
+        expect($(matchingTag).isDisplayed())
           .withContext(`should be one matching tag`)
-          .toBe(1);
-        expect(matchingTag)
+          .toBe(true);
+        expect($(matchingTag).getText())
           .withContext(`incorrect tag text`)
           .toBe(testTag);
       });
