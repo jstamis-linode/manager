@@ -268,7 +268,6 @@ exports.config = {
         require('@babel/register');
 
         browserCommands();
-
         // Timecount needed to generate unqiue timestamp values for mocks
         global.timeCount = 0;
 
@@ -283,13 +282,13 @@ exports.config = {
         }
 
 
-        if (browser.options.desiredCapabilities.browserName.includes('chrome')) {
-            browser.timeouts('page load', process.env.DOCKER ? 30000 : 20000);
-        }
+        // if (browser.options.requestedCapabilities.jsonwpCaps.browserName.includes('chrome')) {
+        //     browser.setTimeout('pageLoad', process.env.DOCKER ? 30000 : 20000);
+        // }
 
-        if (browser.options.desiredCapabilities.browserName.includes('edge')) {
-            browser.windowHandleMaximize();
-        }
+        // if (browser.options.desiredCapabilities.jsonwpCaps.browserName.includes('edge')) {
+        //     browser.windowHandleMaximize();
+        // }
 
         // inject browser object into credstore for login and a few other functions
         credStore.setBrowser(browser);
