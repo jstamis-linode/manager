@@ -54,15 +54,15 @@ class CredStore {
 
         $('#password').waitForDisplayed(constants.wait.long);
         //browser.jsClick('#username');
-        browser.setNewValue('#username', username);
+        $('#username').setValue(username);
         //browser.jsClick('#password');
-        browser.setNewValue('#password', password);
+        $('#password').setValue(password);
+        // browser.setNewValue('#password', password);
 
 
         let url = browser.getUrl();
 
         const loginButton = url.includes('dev') ? '.btn#submit' : '[data-qa-sign-in] input';
-        const letsGoButton = url.includes('dev') ? '.btn#submit' : '[data-qa-welcome-button]';
 
         // Helper to check if on the Authorize 3rd Party App
         const isOauthAuthPage = () => {
@@ -80,7 +80,7 @@ class CredStore {
 
         // Helper to check if CSRF error is displayed on the page
         const csrfErrorExists = () => {
-            const sourceIncludesCSRF = browser.getSource().includes('CSRF');
+            const sourceIncludesCSRF = browser.getPageSource().includes('CSRF');
             return sourceIncludesCSRF;
         };
 
@@ -116,6 +116,7 @@ class CredStore {
 
         // Wait for the welcome modal to display, click it once it appears
         if ($('[role="dialog"]').waitForDisplayed()) {
+            const letsGoButton = url.includes('dev') ? '.btn#submit' : '[data-qa-welcome-button]';
             $(letsGoButton).click();
             $('[role="dialog"]').waitForDisplayed(constants.wait.long, true)
         }
