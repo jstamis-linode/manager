@@ -173,7 +173,7 @@ class ConfigureLinode extends Page {
   }
 
   cloneBaseElemsDisplay() {
-    this.notice.waitForVisible();
+    this.notice.waitForDisplayed();
     const notices = $$(this.notice.selector);
 
     const cloneSLA =
@@ -183,33 +183,68 @@ class ConfigureLinode extends Page {
       h.getText()
     );
 
-    expect(notices.map(n => n.getText())).toContain(cloneSLA);
-    expect($$('[data-qa-select-linode-header]').length).toBe(1);
-    expect(selectLinodePanelText).toContain(cloneFromHeader);
-    expect(this.total.isVisible()).toBe(true);
-    expect(this.total.getText()).toBe('$0.00/mo');
-    expect(this.deploy.isVisible()).toBe(true);
+    expect(notices.map(n => n.getText()))
+      .withContext(`text should contain: ${cloneSLA}`)
+      .toContain(cloneSLA);
+    expect($$('[data-qa-select-linode-header]').length)
+      .withContext(``)
+      .toBe(1);
+    expect(selectLinodePanelText)
+      .withContext(``)
+      .toContain(cloneFromHeader);
+    expect(this.total.isDisplayed())
+      .withContext(``)
+      .toBe(true);
+    expect(this.total.getText())
+      .withContext(``)
+      .toBe('$0.00/mo');
+    expect(this.deploy.isDisplayed())
+      .withContext(``)
+      .toBe(true);
   }
 
   stackScriptsBaseElemsDisplay(stackScriptTab) {
-    this.selectStackScriptPanel.waitForVisible(constants.wait.normal);
-    expect(stackScriptTab.isVisible()).toBe(true);
-    expect(stackScriptTab.getAttribute('aria-selected')).toBe('true');
+    this.selectStackScriptPanel.waitForDisplayed(constants.wait.normal);
+    expect(stackScriptTab.isDisplayed())
+      .withContext(``)
+      .toBe(true);
+    expect(stackScriptTab.getAttribute('aria-selected'))
+      .withContext(``)
+      .toBe('true');
     expect(this.regionSelect).toBeVisible();
-    expect(this.selectRegionHeader.isVisible()).toBe(true);
+    expect(this.selectRegionHeader.isDisplayed())
+      .withContext(``)
+      .toBe(true);
 
-    expect(this.planHeader.isVisible()).toBe(true);
-    expect(this.planTabs.length).toBe(4);
-    expect(this.plans.length).toBeGreaterThan(0);
+    expect(this.planHeader.isDisplayed())
+      .withContext(``)
+      .toBe(true);
+    expect(this.planTabs.length)
+      .withContext(``)
+      .toBe(4);
+    expect(this.plans.length)
+      .withContext(``)
+      .toBeGreaterThan(0);
 
-    expect(this.label.isVisible()).toBe(true);
-    expect(this.labelHeader.isVisible()).toBe(true);
+    expect(this.label.isDisplayed())
+      .withContext(``)
+      .toBe(true);
+    expect(this.labelHeader.isDisplayed())
+      .withContext(``).toBe(true);
 
-    expect(this.passwordHeader.isVisible()).toBe(true);
-    expect(this.password.isVisible()).toBe(true);
+    expect(this.passwordHeader.isDisplayed())
+      .withContext(``)
+      .toBe(true);
+    expect(this.password.isDisplayed())
+      .withContext(``)
+      .toBe(true);
 
-    expect(this.addonsHeader.isVisible()).toBe(true);
-    expect(this.addons.length).toBe(2);
+    expect(this.addonsHeader.isDisplayed())
+      .withContext(``)
+      .toBe(true);
+    expect(this.addons.length)
+      .withContext(``)
+      .toBe(2);
   }
 
   selectFirstStackScript() {
@@ -226,11 +261,11 @@ class ConfigureLinode extends Page {
   }
 
   stackScriptTableDisplay() {
-    this.stackScriptTableHeader.waitForVisible(constants.wait.normal);
+    this.stackScriptTableHeader.waitForDisplayed(constants.wait.normal);
     if (browser.getUrl().includes('/stackscripts')) {
-      this.stackScriptDeploysHeader.waitForVisible(constants.wait.normal);
-      this.stackScriptRevisionsHeader.waitForVisible(constants.wait.normal);
-      this.stackScriptCompatibleImagesHeader.waitForVisible(
+      this.stackScriptDeploysHeader.waitForDisplayed(constants.wait.normal);
+      this.stackScriptRevisionsHeader.waitForDisplayed(constants.wait.normal);
+      this.stackScriptCompatibleImagesHeader.waitForDisplayed(
         constants.wait.normal
       );
     }
@@ -238,40 +273,87 @@ class ConfigureLinode extends Page {
 
   stackScriptMetadataDisplay() {
     this.stackScriptRows.forEach(r => {
-      expect(r.$(this.stackScriptTitle.selector).getText()).toMatch(/./g);
-      expect(r.$(this.stackScriptDeploys.selector).getText()).toMatch(/./g);
-      expect(r.$(this.stackScriptRevision.selector).getText()).toMatch(/./g);
+      expect(r.$(this.stackScriptTitle.selector).getText())
+        .withContext(``)
+        .toMatch(/./g);
+      expect(r.$(this.stackScriptDeploys.selector).getText())
+        .withContext(``)
+        .toMatch(/./g);
+      expect(r.$(this.stackScriptRevision.selector).getText())
+        .withContext(``)
+        .toMatch(/./g);
     });
   }
 
   baseDisplay() {
-    expect(this.createHeader.waitForVisible(constants.wait.normal)).toBe(true);
-    
-    expect(this.createFromDistribution.isVisible()).toBe(true);
-    expect(this.createFromOneClick.isVisible()).toBe(true);
-    expect(this.createFromMyImage.isVisible()).toBe(true);
+    expect(this.createHeader.waitForDisplayed(constants.wait.normal))
+      .withContext(``)
+      .toBe(true);
 
-    expect(this.selectImageHeader.isVisible()).toBe(true);
-    this.imageTabs.forEach(tab => expect(tab.isVisible()).toBe(true));
-    this.images.forEach(i => expect(i.isVisible()).toBe(true));
-    expect(this.showOlderImages.isVisible()).toBe(true);
+    expect(this.createFromDistribution.isDisplayed())
+      .withContext(``)
+      .toBe(true);
+    expect(this.createFromOneClick.isDisplayed())
+      .withContext(``)
+      .toBe(true);
+    expect(this.createFromMyImage.isDisplayed())
+      .withContext(``)
+      .toBe(true);
+
+    expect(this.selectImageHeader.isDisplayed())
+      .withContext(``)
+      .toBe(true);
+    this.imageTabs.forEach(tab =>
+      expect(tab.isDisplayed())
+        .withContext(``)
+        .toBe(true));
+    this.images.forEach(i =>
+      expect(i.isDisplayed())
+        .withContext(``)
+        .toBe(true));
+    expect(this.showOlderImages.isDisplayed())
+      .withContext(``)
+      .toBe(true);
     console.log('checking region')
-    expect(this.regionSelect.isVisible()).toBe(true);
+    expect(this.regionSelect.isDisplayed())
+      .withContext(``)
+      .toBe(true);
     console.log('checking plan options')
-    expect(this.planHeader.isVisible()).toBe(true);
-    this.planTabs.forEach(tab => expect(tab.isVisible()).toBe(true));
-    this.plans.forEach(p => expect(p.isVisible()).toBe(true));
+    expect(this.planHeader.isDisplayed())
+      .withContext(``)
+      .toBe(true);
+    this.planTabs.forEach(tab =>
+      expect(tab.isDisplayed())
+      .withContext(``)
+      .toBe(true));
+    this.plans.forEach(p =>
+      expect(p.isDisplayed())
+        .withContext(``)
+        .toBe(true));
     console.log('checking label')
-    expect(this.labelHeader.isVisible()).toBe(true);
-    expect(this.label.isVisible()).toBe(true);
+    expect(this.labelHeader.isDisplayed())
+      .withContext(``)
+      .toBe(true);
+    expect(this.label.isDisplayed())
+      .withContext(``)
+      .toBe(true);
 
-    expect(this.multiSelect.isVisible()).toBe(true);
+    expect(this.multiSelect.isDisplayed())
+      .withContext(``)
+      .toBe(true);
 
-    expect(this.passwordHeader.isVisible()).toBe(true);
-    expect(this.password.isVisible()).toBe(true);
+    expect(this.passwordHeader.isDisplayed())
+      .withContext(``)
+      .toBe(true);
+    expect(this.password.isDisplayed())
+      .withContext(``)
+      .toBe(true);
 
-    expect(this.addonsHeader.isVisible()).toBe(true);
-    this.addons.forEach(a => expect(a.isVisible()).toBe(true));
+    expect(this.addonsHeader.isDisplayed()).toBe(true);
+    this.addons.forEach(a =>
+      expect(a.isDisplayed())
+        .withContext(``)
+        .toBe(true));
   }
   // Configure a basic linode, selecting all the default options
   generic(label = `Test-Linode${new Date().getTime()}`) {
@@ -325,9 +407,9 @@ class ConfigureLinode extends Page {
 
   cloneSelectSource(linodeLabel) {
     const sourceSection = $$('[data-qa-select-linode-panel]');
-    expect(sourceSection[0].$('[data-qa-select-linode-header]').getText()).toBe(
-      'Select Linode to Clone From'
-    );
+    expect(sourceSection[0].$('[data-qa-select-linode-header]').getText())
+      .withContext(``)
+      .toBe('Select Linode to Clone From');
     // const targetSection = $$('[data-qa-select-linode-panel]')
     // .filter(s => s.$('[data-qa-select-linode-header]').getText() === 'Select Target Linode');
 
@@ -374,16 +456,16 @@ class ConfigureLinode extends Page {
     } else {
       const cloneToNewCard = $('[data-qa-select-card-heading="New Linode"]');
       cloneToNewCard.click();
-      browser.waitForVisible('[data-qa-tp="Region"]');
-      browser.waitForVisible('[data-qa-tp="Linode Plan"]');
-      browser.waitForVisible('[data-qa-label-header]');
+      $('[data-qa-tp="Region"]').waitForDisplayed();
+      $('[data-qa-tp="Linode Plan"]').waitForDisplayed();
+      $('[data-qa-label-header]').waitForDisplayed();
     }
   }
 
   createFrom(source) {
     const sourceSelector = `[data-qa-create-from="${source}"]`;
-    $(sourceSelector).waitForVisible(constants.wait.normal);
-    browser.click(sourceSelector);
+    $(sourceSelector).waitForDisplayed(constants.wait.normal);
+    $(sourceSelector).click();
     browser.waitUntil(
       function() {
         return browser

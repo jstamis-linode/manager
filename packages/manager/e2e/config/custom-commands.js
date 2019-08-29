@@ -160,7 +160,7 @@ exports.browserCommands = () => {
     */
     browser.addCommand('waitClick', function(elementToClick, timeout=10000) {
         browser.waitUntil(function() {
-            browser.waitForVisible(elementToClick);
+            $(elementToClick).waitForDisplayed();
             return browser.click(elementToClick).state === 'success';
         }, timeout);
     });
@@ -169,7 +169,7 @@ exports.browserCommands = () => {
         let errorObject;
         browser.waitUntil(function() {
             try {
-                browser.click(elementToClick);
+                $(elementToClick).click();
                 return true;
             } catch (err) {
                 errorObject = err;
