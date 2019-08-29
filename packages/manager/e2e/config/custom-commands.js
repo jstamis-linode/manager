@@ -185,9 +185,19 @@ exports.browserCommands = () => {
     * @param { Number } timeout
     */
     browser.addCommand('trySetValue', function(selector, value, timeout=10000) {
+        // Delete any current characters in the field
+        fieldLength = $(selector).getValue().length;
+
+        console.log(`field length is... ${fieldLength}`);
+
+        for (i = 0; i < fieldLength; i++) {
+            $(selector).setValue('\uE003');
+        }
+
+
         browser.waitUntil(function() {
-            browser.setValue(selector, value);
-            return browser.getValue(selector) === value;
+            $(selector).setValue(value);
+            return $(selector).getValue(selector) === value;
         }, timeout);
     });
 
