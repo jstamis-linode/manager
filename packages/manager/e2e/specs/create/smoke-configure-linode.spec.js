@@ -1,8 +1,8 @@
 const { constants } = require('../../constants');
-import Create from '../../pageobjects/create';
+//import Create from '../../pageobjects/create';
 import ConfigureLinode from '../../pageobjects/configure-linode';
 import CheckoutSummary from '../../pageobjects/checkout-summary';
-import { browserCommands } from '../../config/custom-commands';
+//import { browserCommands } from '../../config/custom-commands';
 
 describe('Create Linode - Configure Linode Suite', () => {
   beforeAll(() => {
