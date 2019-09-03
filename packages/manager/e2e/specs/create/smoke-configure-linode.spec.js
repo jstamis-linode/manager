@@ -2,11 +2,17 @@ const { constants } = require('../../constants');
 import Create from '../../pageobjects/create';
 import ConfigureLinode from '../../pageobjects/configure-linode';
 import CheckoutSummary from '../../pageobjects/checkout-summary';
+import { browserCommands } from '../../config/custom-commands';
 
 describe('Create Linode - Configure Linode Suite', () => {
   beforeAll(() => {
     ConfigureLinode.selectGlobalCreateItem('Linode');
   });
+
+  beforeEach(() => {
+    browser.refresh()
+    $('[data-qa-create-linode-header]').waitForDisplayed(constants.wait.short);
+  })
 
   it('should display configure elements', () => {
     ConfigureLinode.baseDisplay();
@@ -18,35 +24,35 @@ describe('Create Linode - Configure Linode Suite', () => {
       const originalPrice = CheckoutSummary.costSummary.getText();
       p.click();
       const updatedPrice = CheckoutSummary.costSummary.getText();
-      expect(updatedPrice).not.toBe(originalPrice);
+      expect(updatedPrice)
+        .withContext(`incorrect summary price`)
+        .not.toBe(originalPrice);
     });
   });
 
   it('should configure a generic linode and update cost summary', () => {
-    const genericPrice = /\$.*\/mo/ig;
+
+    const genericPrice = CheckoutSummary.costSummary.getText()
     const genericImage = ConfigureLinode.imageNames[0].getText();
     const genericType = ConfigureLinode.planNames[0].getText();
 
     ConfigureLinode.generic();
-    browser.debug()
 
     expect(CheckoutSummary.costSummary.getText())
-      .withContext(`Incorrect text found`)
-      .toMatch(genericPrice);
+      .withContext(`incorrect cost summary value`)
+      .toBeGreaterThan(genericPrice);
     expect(CheckoutSummary.subheaderDisplays(genericImage))
-      .withContext(``)
+      .withContext(`subheader ${genericImage} image should be displayed`)
       .toBe(true);
     expect(CheckoutSummary.subheaderDisplays(genericType))
-      .withContext(``)
+      .withContext(`subheader ${genericType} type should be displayed`)
       .toBe(true);
   });
 
   it('should display a region select', () => {
-    // This fails currently because the previous test sets the region,
-    // which changes the selector value. Since we're planning to make tests
-    // not dependent on each other in this way, skipping for now.
+
     expect(ConfigureLinode.regionSelect.isDisplayed())
-      .withContext(`Region select should be displayed`)
+      .withContext(`region select should be displayed`)
       .toBe(true);
   });
 
@@ -55,7 +61,7 @@ describe('Create Linode - Configure Linode Suite', () => {
     ConfigureLinode.selectImage(imageName);
 
     expect(CheckoutSummary.subheaderDisplays(imageName))
-      .withContext(``)
+      .withContext(`subheader name ${imageName} should be displayed`)
       .toBe(true);
   });
 });

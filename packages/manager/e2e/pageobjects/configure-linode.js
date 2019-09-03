@@ -286,74 +286,69 @@ class ConfigureLinode extends Page {
   }
 
   baseDisplay() {
-    expect(this.createHeader.waitForDisplayed(constants.wait.normal))
-      .withContext(``)
-      .toBe(true);
+    console.log('checking Create New Linode page');
+    const tabDisplayed = 'tab should be displayed'
+
+    this.createHeader.waitForDisplayed(constants.wait.normal)
 
     expect(this.createFromDistribution.isDisplayed())
-      .withContext(``)
+      .withContext(`Distributions ${tabDisplayed}`)
       .toBe(true);
     expect(this.createFromOneClick.isDisplayed())
-      .withContext(``)
+      .withContext(`One-Click ${tabDisplayed}`)
       .toBe(true);
     expect(this.createFromMyImage.isDisplayed())
-      .withContext(``)
+      .withContext(`My images ${tabDisplayed}`)
       .toBe(true);
 
     expect(this.selectImageHeader.isDisplayed())
-      .withContext(``)
+      .withContext(`Choose a Distribution header should be displayed`)
       .toBe(true);
     this.imageTabs.forEach(tab =>
       expect(tab.isDisplayed())
-        .withContext(``)
+        .withContext(`${tabDisplayed}`)
         .toBe(true));
     this.images.forEach(i =>
       expect(i.isDisplayed())
-        .withContext(``)
+        .withContext(`distro image should be displayed`)
         .toBe(true));
     expect(this.showOlderImages.isDisplayed())
-      .withContext(``)
+      .withContext(`"Show Older Images" should be displayed`)
       .toBe(true);
-    console.log('checking region')
     expect(this.regionSelect.isDisplayed())
-      .withContext(``)
+      .withContext(`"Select a Region" should be displayed`)
       .toBe(true);
-    console.log('checking plan options')
     expect(this.planHeader.isDisplayed())
-      .withContext(``)
+      .withContext(`Linode plan header should be displayed`)
       .toBe(true);
     this.planTabs.forEach(tab =>
       expect(tab.isDisplayed())
-      .withContext(``)
+      .withContext(`plan ${tabDisplayed}`)
       .toBe(true));
     this.plans.forEach(p =>
       expect(p.isDisplayed())
-        .withContext(``)
+        .withContext(`plan options should be displayed`)
         .toBe(true));
-    console.log('checking label')
     expect(this.labelHeader.isDisplayed())
-      .withContext(``)
+      .withContext(`label header should be displayed`)
       .toBe(true);
     expect(this.label.isDisplayed())
-      .withContext(``)
-      .toBe(true);
-
-    expect(this.multiSelect.isDisplayed())
-      .withContext(``)
+      .withContext(`label should be displayed`)
       .toBe(true);
 
     expect(this.passwordHeader.isDisplayed())
-      .withContext(``)
+      .withContext(`password section should be displayed`)
       .toBe(true);
     expect(this.password.isDisplayed())
-      .withContext(``)
+      .withContext(`password field should be displayed`)
       .toBe(true);
 
     expect(this.addonsHeader.isDisplayed()).toBe(true);
     this.addons.forEach(a =>
       expect(a.isDisplayed())
-        .withContext(``)
+        .withContext(`add-on should be displayed`)
         .toBe(true));
+    console.log('base Linode create page checked')
   }
   // Configure a basic linode, selecting all the default options
   generic(label = `Test-Linode${new Date().getTime()}`) {

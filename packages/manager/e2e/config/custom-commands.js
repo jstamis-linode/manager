@@ -178,27 +178,26 @@ exports.browserCommands = () => {
         }, timeout, `failed to click ${elementToClick} due to ${JSON.stringify(errorObject)}`);
     });
 
-    /* Continuously try to set a value on a given selector
+    /* Due to issues with react and text fields we now get the length of the
+    *  text field value and use the delete key to clear the field. We then
+    *  continuously try to set a value on a given selector
     *  for a given timeout. Returns once the value has been successfully set
     * @param { String } selector to target (usually an input)
     * @param { String } value to set input of
     * @param { Number } timeout
     */
     browser.addCommand('trySetValue', function(selector, value, timeout=10000) {
-        // Delete any current characters in the field
-        fieldLength = $(selector).getValue().length;
-
-        console.log(`field length is... ${fieldLength}`);
-
-        for (i = 0; i < fieldLength; i++) {
-            $(selector).setValue('\uE003');
+        const fieldValue = $(selector).getValue().length
+        for(i = 0; i < fieldValue; i++) {
+          console.log(`clearing out the field value: ${value} for ${selector} selector`)
+          $(selector).setValue()
         }
-
 
         browser.waitUntil(function() {
             $(selector).setValue(value);
-            return $(selector).getValue(selector) === value;
+            return $(selector).getValue() === value;
         }, timeout);
+        console.log(`new set value: ${value}, has been entered`)
     });
 
     //This has been added as there are react issues with the element.setValue and element.clearValue

@@ -121,12 +121,16 @@ export default class Page {
   }
 
   selectGlobalCreateItem(menuItem) {
-    console.log(`setting global create item: ${menuItem}`)
+    console.log(`setting global create item to: ${menuItem}`)
     this.globalCreate.waitForDisplayed(constants.wait.normal);
-    browser.tryClick(this.globalCreate.selector);
     $('[data-qa-add-new-menu-button]').waitForDisplayed(constants.wait.normal);
+    $('[data-qa-add-new-menu-button]').click();
+    $(`[data-qa-add-new-menu="${menuItem}"]`).waitForDisplayed(constants.wait.short);
+    console.log(`selecting ${menuItem} from menu`);
     $(`[data-qa-add-new-menu="${menuItem}"]`).click();
-    $('[data-qa-add-new-menu-button]').waitForDisplayed(constants.wait.normal, true);
+    console.log(`waiting for add new menu button to not be displayed`);
+    $(`[data-qa-add-new-menu="${menuItem}"]`).waitForDisplayed(constants.wait.normal, true);
+    console.log(`menu item ${menuItem} has been selected`);
   }
 
   waitForNotice(noticeMsg, timeout=10000, opposite=false) {
