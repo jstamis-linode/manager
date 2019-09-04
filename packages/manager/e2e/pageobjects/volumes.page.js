@@ -14,9 +14,9 @@ class Volumes extends Page {
 
     baseElemsDisplay(initial) {
         if (initial) {
-            this.placeholderText.waitForVisible();
+            this.placeholderText.waitForDisplayed();
         } else {
-            this.volumeCellElem.waitForVisible(constants.wait.normal);
+            this.volumeCellElem.waitForDisplayed(constants.wait.normal);
         }
     }
 
@@ -34,20 +34,20 @@ class Volumes extends Page {
         const numberOfVolumes = this.volumeCell.length;
         volumeElement.$('[data-qa-action-menu]').click();
 
-        browser.waitForVisible('[data-qa-action-menu-item="Delete"]');
+        $('[data-qa-action-menu-item="Delete"]').waitForDisplayed();
         browser.jsClick('[data-qa-action-menu-item="Delete"]');
 
-        browser.waitForVisible('[data-qa-dialog-title]');
+        $('[data-qa-dialog-title]').waitForDisplayed();
 
         const dialogTitle = $('[data-qa-dialog-title]');
         const dialogConfirm = $('[data-qa-confirm]');
         const dialogCancel = $(this.cancelButton.selector);
 
-        expect(dialogTitle.isVisible()).toBe(true);
+        expect(dialogTitle.isDisplayed()).toBe(true);
         expect(dialogTitle.getText()).toMatch('Delete');
-        expect(dialogConfirm.isVisible()).toBe(true);
+        expect(dialogConfirm.isDisplayed()).toBe(true);
         expect(dialogConfirm.getTagName()).toBe('button');
-        expect(dialogCancel.isVisible()).toBe(true);
+        expect(dialogCancel.isDisplayed()).toBe(true);
         expect(dialogCancel.getTagName()).toBe('button');
 
         // Confirm remove
@@ -59,14 +59,14 @@ class Volumes extends Page {
     }
 
     detachConfirm(linodeLabel) {
-        this.dialogTitle.waitForVisible(constants.wait.normal);
+        this.dialogTitle.waitForDisplayed(constants.wait.normal);
         browser.click('[data-qa-confirm]');
 
-        this.dialogTitle.waitForVisible(constants.wait.normal, true);
+        this.dialogTitle.waitForDisplayed(constants.wait.normal, true);
 
         // Wait for progress bars to not display on volume detail pages
         if (!browser.getUrl().includes('/linodes')) {
-            browser.waitForVisible(`[data-qa-volume-cell-attachment="${linodeLabel}"]`,constants.wait.minute, true);
+            $(`[data-qa-volume-cell-attachment="${linodeLabel}"]`).waitForDisplayed(constants.wait.minute, true);
         }
     }
 

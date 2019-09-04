@@ -48,7 +48,7 @@ describe('Create - Volume Suite', () => {
 
         volumeId = VolumeDetail.getVolumeId(testVolume.label);
 
-        VolumeDetail.volumeCellElem.waitForVisible(constants.wait.normal);
+        VolumeDetail.volumeCellElem.waitForDisplayed(constants.wait.normal);
     });
 
     xit('should detach from linode', () => {
