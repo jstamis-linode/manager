@@ -8,7 +8,7 @@ describe('Billing - View & Update Contact Info Suite', () => {
         browser.url(constants.routes.account.billing);
     });
 
-    fit('should display contact summary elements', () => {
+    it('should display contact summary elements', () => {
         Billing.contactSummaryDisplay();
     });
 

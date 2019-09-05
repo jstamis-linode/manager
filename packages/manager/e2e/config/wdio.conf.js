@@ -11,9 +11,11 @@ const { browserConf } = require('./browser-config');
 const { keysIn } = require('lodash');
 const selectedBrowser = argv.browser ? browserConf[argv.browser] : browserConf['chrome'];
 
+const { createLinode } = require('../setup/setup');
+
 const specsToRun = () => {
     if (argv.file) {
-        return [argv.file];
+        return [`./e2e/specs/${argv.file}`];
     }
 
     if (argv.spec) {
@@ -66,6 +68,8 @@ if (!(CRED_STORE_MODE in credStores)) {
     throw new Error(msg);
 }
 const credStore = credStores[CRED_STORE_MODE];
+
+let creds = null;
 
 exports.config = {
     // Selenium Host/Port
@@ -235,9 +239,9 @@ exports.config = {
      * @param {Array.<Object>} capabilities list of capabilities details
      */
     onPrepare: function (config, capabilities, user) {
-        if ((parallelRunners > 1) && (CRED_STORE_MODE === 'fs')) {
-            throw new Error("***** Can't use filesystem cred store when parallelRunners > 1.\n***** Set CRED_STORE_MODE=mongolocal in .env and launch mongodb by running: docker run -d -p 27017:27017 mongo");
-        }
+        // if ((parallelRunners > 1) && (CRED_STORE_MODE === 'fs')) {
+            // throw new Error("***** Can't use filesystem cred store when parallelRunners > 1.\n***** Set CRED_STORE_MODE=mongolocal in .env and launch mongodb by running: docker run -d -p 27017:27017 mongo");
+        // }
 
         // Generate temporary test credentials and store for use across tests
         credStore.generateCreds(config, parallelRunners)
@@ -255,8 +259,12 @@ exports.config = {
      * @param {Array.<Object>} capabilities list of capabilities details
      * @param {Array.<String>} specs List of spec file paths that are to be run
      */
-    // beforeSession: function (config, capabilities, specs) {
-    // },
+    beforeSession: function (config, capabilities, specs) {
+        return credStore.checkoutCreds(specs[0])
+            .then((testCreds) => {
+                creds = testCreds;
+            }).catch((err) => console.log(err));
+    },
     /**
      * Gets executed before test execution begins. At this point you can access to all global
      * variables like `browser`. It is the perfect place to define custom commands.
@@ -297,13 +305,17 @@ exports.config = {
         // and utility code
         browser.credStore = credStore;
 
-        let creds = null;
-        browser.call(() => {
-            return credStore.checkoutCreds(specs[0])
-            .then((testCreds) => {
-                creds = testCreds;
-            }).catch((err) => console.log(err));
-        });
+
+        // We are now checking out credentials in the beforeSession hook,
+        // This will allow us to do api calls before the session
+        // browser.call(() => {
+        //     return credStore.checkoutCreds(specs[0])
+        //     .then((testCreds) => {
+        //         creds = testCreds;
+        //     }).catch((err) => console.log(err));
+        // });
+
+
         credStore.login(creds.username, creds.password, false);
     },
     /**
@@ -318,11 +330,11 @@ exports.config = {
      * Hook that gets executed before the suite starts
      * @param {Object} suite suite details
      */
-    /*beforeSuite: function (suite) {
-        // Click beta notice button
-        browser.waitForVisible('[data-qa-dialog-content] button');
-        browser.click('[data-qa-dialog-content] button');
-    },*/
+    // beforeSuite: function (suite) {
+    //     // Click beta notice button
+    //     browser.waitForVisible('[data-qa-dialog-content] button');
+    //     browser.click('[data-qa-dialog-content] button');
+    // },
     /**
      * Function to be executed before a test (in Mocha/Jasmine) or a step (in Cucumber) starts.
      * @param {Object} test test details
@@ -345,14 +357,14 @@ exports.config = {
      * Function to be executed after a test (in Mocha/Jasmine) or a step (in Cucumber) ends.
      * @param {Object} test test details
      */
-    // afterTest: function (test) {
-    // },
+    afterTest: function (test) {
+    },
     /**
      * Hook that gets executed after the suite has ended
      * @param {Object} suite suite details
      */
-    // afterSuite: function (suite) {
-    // },
+    afterSuite: function (suite) {
+    },
 
     /**
      * Runs after a WebdriverIO command gets executed
@@ -361,8 +373,8 @@ exports.config = {
      * @param {Number} result 0 - command success, 1 - command error
      * @param {Object} error error object if any
      */
-    // afterCommand: function (commandName, args, result, error) {
-    // },
+    afterCommand: function (commandName, args, result, error) {
+    },
     /**
      * Gets executed after all tests are done. You still have access to all global variables from
      * the test.
@@ -392,8 +404,8 @@ exports.config = {
      * @param {Array.<Object>} capabilities list of capabilities details
      * @param {Array.<String>} specs List of spec file paths that ran
      */
-    // afterSession: function (config, capabilities, specs) {
-    // },
+    afterSession: function (config, capabilities, specs) {
+    },
     /**
      * Gets executed after all workers got shut down and the process is about to exit.
      * @param {Object} exitCode 0 - success, 1 - fail
