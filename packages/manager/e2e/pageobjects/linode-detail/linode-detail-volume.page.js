@@ -242,9 +242,7 @@ export class VolumeDetail extends Page {
   }
 
   detachVolume(volume, label, detach=true) {
-    browser.debug()
     console.log(`detaching ${label} volume`);
-    //const volumeId = getVolumeId(label);
     const volId = $(`[data-qa-volume-cell-label="${label}"`).$('..').getAttribute(`data-qa-volume-cell`)
 
     console.log(`volume ID: ${volId}`);
@@ -272,8 +270,7 @@ export class VolumeDetail extends Page {
       dialogConfirm.click();
       dialogConfirm.waitForDisplayed(constants.wait.normal, true);
       this.regionField.waitForDisplayed(constants.wait.long);
-      console.log('finished waiting')
-      expect($(`[data-qa-volume-cell-label="${label}"]`).$('..').$('[data-qa-unattached]').isDisplayed())
+      expect($(`[data-qa-volume-cell="${volId}"]`).isDisplayed())
         .withContext(`"Unattached" ${assertLog.displayed}`)
         .toBe(true)
       console.log(`${label} volume detached`)

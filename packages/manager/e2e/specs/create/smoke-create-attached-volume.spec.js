@@ -54,7 +54,7 @@ describe('Create - Volume Suite', () => {
     $(`[data-qa-volume-cell="${volumeId}"]`).waitForDisplayed(constants.wait.normal);
   });
 
-  it('should detach from linode', () => {
+  xit('should detach from linode', () => {
     console.log(`volume id: ${volumeId}`)
     const volumeElement = $(`[data-qa-volume-cell="${volumeId}"]`);
     VolumeDetail.detachVolume(volumeElement, testLabel);
